@@ -84,7 +84,9 @@ export class BillingInvoiceService {
         if (!encounter) throw BILLING_INVOICE_ERRORS.ENCOUNTER_NOT_FOUND;
 
         const existing = await BillingInvoiceRepository.getInvoiceByEncounterId(encounterId);
-        if (existing) throw BILLING_INVOICE_ERRORS.ENCOUNTER_ALREADY_INVOICED;
+        if (existing) {
+            return (await BillingInvoiceRepository.getInvoiceById(existing.invoices_id))!;
+        }
 
         const client = await BillingInvoiceRepository.getClient();
         try {

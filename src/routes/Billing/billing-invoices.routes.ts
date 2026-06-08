@@ -69,7 +69,7 @@ router.post('/invoices', verifyAccessToken, authorizeRoles('ADMIN', 'STAFF'), va
  *       Tự động tạo claim BHYT.
  *
  *       Phân quyền: BILLING_INVOICE_CREATE
- *       Vai trò được phép: ADMIN, STAFF
+ *       Vai trò được phép: ADMIN, STAFF, DOCTOR
  *     tags: [9.2.1 Quản lý Hóa đơn]
  *     security: [{ bearerAuth: [] }]
  *     parameters:
@@ -85,7 +85,7 @@ router.post('/invoices', verifyAccessToken, authorizeRoles('ADMIN', 'STAFF'), va
  *       400:
  *         description: Encounter không tồn tại hoặc đã có HĐ
  */
-router.post('/invoices/generate/:encounterId', verifyAccessToken, authorizeRoles('ADMIN', 'STAFF'), BillingInvoiceController.generateInvoice);
+router.post('/invoices/generate/:encounterId', verifyAccessToken, authorizeRoles('ADMIN', 'STAFF', 'DOCTOR'), BillingInvoiceController.generateInvoice);
 
 /**
  * @swagger

@@ -405,6 +405,7 @@ export class AppointmentStatusRepository {
             SELECT
                 a.appointments_id,
                 a.appointment_code,
+                a.patient_id,
                 a.status,
                 a.priority,
                 a.queue_number,
