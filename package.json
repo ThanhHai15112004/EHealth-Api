@@ -9,7 +9,10 @@
     "start": "cross-env NODE_ENV=production node dist/server.js",
     "start:prod": "cross-env NODE_ENV=production node dist/server.js",
     "start:dev": "cross-env NODE_ENV=development node dist/server.js",
-    "test": "jest"
+    "test": "jest",
+    "seed:dev": "ts-node scripts/seed-runner.ts",
+    "seed:dev:all": "ts-node scripts/seed-runner.ts --all",
+    "seed:reset": "psql -h ${DB_HOST:-localhost} -U ${DB_USER:-postgres} -d ${DB_NAME:-ehealthdatabase} -f scripts/seed-reset.sql"
   },
   "keywords": [],
   "author": "",

@@ -352,7 +352,7 @@ E-Health_server/
 ### 1. Clone & Cài đặt
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/PTH-Group-Inc/EHealth-Api.git
 cd E-Health_server
 npm install
 ```

@@ -56,7 +56,7 @@ CREATE TABLE user_sessions (
     user_sessions_id VARCHAR(100) PRIMARY KEY,
     user_id VARCHAR(50) NOT NULL,
     refresh_token_hash VARCHAR(512) NOT NULL,
-    device_id VARCHAR(255) NOT NULL,
+    device_id VARCHAR(255),
     device_name VARCHAR(255),
     ip_address VARCHAR(45),
     user_agent TEXT,
