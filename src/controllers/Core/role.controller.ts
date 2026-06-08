@@ -301,6 +301,27 @@ export class RoleController {
     });
 
     /**
+     * Thay thế toàn bộ API Permissions cho Vai trò
+     */
+    static replaceRoleApiPermissions = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+            const adminId = req.auth?.user_id;
+            if (!adminId) throw new AppError(401, 'UNAUTHORIZED', 'Không thể xác thực danh tính');
+
+            const ipAddress = req.ip || req.connection.remoteAddress || null;
+            const userAgent = req.headers['user-agent'] || null;
+
+            const apiIds: string[] = req.body.api_ids || [];
+            console.log('--- REPLACING API PERMISSIONS FOR ROLE:', req.params.roleId, '---');
+            console.log('API IDs RECEIVED:', apiIds);
+
+            await RoleApiPermissionService.replaceApiPermissions(req.params.roleId as string, apiIds, adminId, ipAddress, userAgent);
+            res.status(200).json({
+                success: true,
+                message: 'Cập nhật phân quyền API cho hệ thống thành công'
+            });
+    });
+
+    /**
      * Gỡ API Permission khỏi Vai trò
      */
     static removeRoleApiPermission = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {

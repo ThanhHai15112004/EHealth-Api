@@ -5,13 +5,14 @@ import { verifyAccessToken } from '../../middleware/verifyAccessToken.middleware
 import multer from 'multer';
 import { UserImportController } from '../../controllers/Core/user-import.controller';
 import { UserExportController } from '../../controllers/Core/user-export.controller';
+import { uploadImage, verifyFileSignature } from '../../middleware/upload.middleware';
 
 const userRoutes = Router();
 
 userRoutes.use(verifyAccessToken);
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 
-userRoutes.post('/:userId/avatar', upload.single('file'), UserController.uploadUserAvatar);
+userRoutes.post('/:userId/avatar', uploadImage.single('avatar'), verifyFileSignature, UserController.uploadUserAvatar);
 
 /**
  * @swagger

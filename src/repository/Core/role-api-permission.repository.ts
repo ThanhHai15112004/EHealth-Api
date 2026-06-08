@@ -77,8 +77,44 @@ export class RoleApiPermissionRepository {
                 WHERE role_id = $1 AND api_id = $2
             `, [roleId, apiId]);
 
+            await client.query('COMMIT');
+        } catch (error) {
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+        }
+    }
 
+    /**
+     * Thay thế toàn bộ danh sách API Permissions của một Vai trò
+     */
+    static async replaceApiPermissions(
+        roleId: string,
+        apiIds: string[],
+        adminId: string,
+        ipAddress: string | null = null,
+        userAgent: string | null = null
+    ): Promise<void> {
+        const client = await pool.connect();
+        try {
+            await client.query('BEGIN');
 
+            // 1. Delete all existing api permissions
+            await client.query(`
+                DELETE FROM role_api_permissions WHERE role_id = $1
+            `, [roleId]);
+
+            // 2. Insert new ones
+            if (apiIds && apiIds.length > 0) {
+                const values = apiIds.map((apiId, idx) => `($1, $${idx + 2})`).join(', ');
+                const params = [roleId, ...apiIds];
+                await client.query(`
+                    INSERT INTO role_api_permissions (role_id, api_id)
+                    VALUES ${values}
+                    ON CONFLICT DO NOTHING
+                `, params);
+            }
 
             await client.query('COMMIT');
         } catch (error) {

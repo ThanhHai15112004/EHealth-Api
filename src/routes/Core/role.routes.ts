@@ -442,6 +442,41 @@ roleRoutes.get('/:roleId/api-permissions', RoleController.getRoleApiPermissions)
 /**
  * @swagger
  * /api/roles/{roleId}/api-permissions:
+ *   put:
+ *     summary: Thay thế danh sách API được phép truy cập của Vai trò
+ *     description: |
+ *       **Vai trò được phép:** ADMIN
+ *
+ *     tags: [1.3.6 Kiểm soát API theo vai trò]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: roleId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [api_ids]
+ *             properties:
+ *               api_ids:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *     responses:
+ *       200:
+ *         description: Trả về thành công
+ */
+roleRoutes.put('/:roleId/api-permissions', RoleController.replaceRoleApiPermissions);
+
+/**
+ * @swagger
+ * /api/roles/{roleId}/api-permissions:
  *   post:
  *     summary: Gán thêm một API cho Vai trò
  *     description: |

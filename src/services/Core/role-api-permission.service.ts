@@ -59,4 +59,23 @@ export class RoleApiPermissionService {
         await RoleApiPermissionRepository.removeApiPermission(roleId, apiId, adminId, ipAddress, userAgent);
         await ApiPermissionCacheService.refreshCache();
     }
+
+    /**
+     * Thay thế toàn bộ API endpoints cho Role
+     */
+    static async replaceApiPermissions(
+        roleId: string,
+        apiIds: string[],
+        adminId: string,
+        ipAddress: string | null = null,
+        userAgent: string | null = null
+    ): Promise<void> {
+        const role = await RoleRepository.getRoleById(roleId);
+        if (!role) {
+            throw new AppError(404, 'ROLE_NOT_FOUND', 'Vai trò không tồn tại');
+        }
+
+        await RoleApiPermissionRepository.replaceApiPermissions(roleId, apiIds, adminId, ipAddress, userAgent);
+        await ApiPermissionCacheService.refreshCache();
+    }
 }
